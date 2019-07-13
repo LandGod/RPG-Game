@@ -1,0 +1,19 @@
+.char {
+    background-color: lightgray;
+    border: 1px solid black;
+}
+
+.pc {
+    background-color: aquamarine;
+    border: 3px solid green;
+}
+
+.ec {
+    background-color: grey;
+    border: 1px solid red;
+}
+
+.opp {
+    background-color: pink;
+    border: 3px solid red;
+}
