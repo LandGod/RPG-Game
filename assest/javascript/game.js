@@ -67,6 +67,7 @@ class Character {
             this.dp = dSV[this.name][2];
             this.element.attr('class', defualtAttributes);
             this.class = defualtAttributes.split(' ');
+            this.element.find('img').attr('src', `./assest/images/${name}.png`)
         };
 
         // Adds a class to the 'class' attribute of the html element
@@ -213,6 +214,7 @@ const mainLoop = {
                     // Game over
                     pc.mkClass('dead'); // Display pc as dead
                     $('#title').html('G A M E &nbsp;&nbsp; O V E R'); // Change title
+                    pc.element.find('img').attr('src', "./assest/images/skull.png"); // Change character image to skull
 
                     // It's important to add some blank lines above the actionButton to push it down the page
                     // This prevents a user who is mashing 'attack' from restarting the game before they realize it's even over
