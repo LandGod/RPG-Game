@@ -188,17 +188,23 @@ const mainLoop = {
                     $('#row-bot').html('<br> <br>');
                     actionButton.element.html('New Game');
                     this.mode = 'end';
-                } else if (this.opponent.hp < 1) {
-                    // Win round. Remove enemy. 
+                } 
+                
+                if (this.opponent.hp < 1) { // Wether or not we've won or lost, we'll still 'kill' the enemy if they died this round
+                    // Perform kill actions
                     this.opponent.mkClass('dead'); // Display character as dead
                     ecs.splice(ecs.indexOf(this.opponent),1); // Remove dead character from list of ecs
                     deadNames.push(this.opponent.name); // Add name to list of the dead
                     this.opponent = undefined; // Reset this.opponent
-                    // Reset to pick new enemy
-                    this.mode = 'enemySelect' // Change mode back to enemy select
-                    // Reset page back to enemy select:
-                    $('#title').html('Select another opponent!');
-                    actionButton.element.html('Select');
+
+                    // Now only if we haven't also won or lost the game this round, we'll have the player chose another opponent to fight
+                    if (this.mode === 'attack') {
+                        // Reset to pick new enemy
+                        this.mode = 'enemySelect' // Change mode back to enemy select
+                        // Reset page back to enemy select:
+                        $('#title').html('Select another opponent!');
+                        actionButton.element.html('Select');
+                    };
                 };
                 break;
             
