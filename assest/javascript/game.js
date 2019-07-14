@@ -16,8 +16,8 @@ ec = enemy character
 */
 
 var pc; // Will be the object chosen as the player character
-const ecs = []; // List of all objects chose to be enemy characters
-const deadNames = []; // List of value of .name for all dead characters
+var ecs = []; // List of all objects chose to be enemy characters
+var deadNames = []; // List of value of .name for all dead characters
 
 // Value of 'class' atribute for the character html elments before being designated 'pc' or 'ec'
 const defualtAttributes = $('.char').attr('class'); 
@@ -206,12 +206,8 @@ const mainLoop = {
                 // Reset game
                 this.mode = 'charSelect';
                 pc = undefined;
-                for (e in ecs) {
-                    ecs.pop();
-                };
-                for (d in deadNames) {
-                    deadNames.pop();
-                };
+                ecs = [];
+                deadNames = [];
                 this.opponent = undefined;
                 for (c in allChars) {
                     allChars[c].reInitialize();
