@@ -17,3 +17,8 @@
     background-color: pink;
     border: 3px solid red;
 }
+
+.dead {
+    background-color: maroon;
+    border: 1px solid darkgrey;
+}
