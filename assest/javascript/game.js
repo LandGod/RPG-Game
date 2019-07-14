@@ -182,7 +182,7 @@ const mainLoop = {
                     $('#row-bot').html('<br> <br>');
                     actionButton.element.html('New Game');
                     this.mode = 'end';
-                } else if (this.opponent.hp < 1 && ecs === []) {
+                } else if (this.opponent.hp < 1 && ecs.length < 2) {
                     // Win!
                     $('#title').html('Y O U &nbsp;&nbsp; W I N');
                     $('#row-bot').html('<br> <br>');
