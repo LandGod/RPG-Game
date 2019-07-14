@@ -245,8 +245,9 @@ const mainLoop = {
                     this.opponent.mkClass('dead'); // Display character as dead
                     ecs.splice(ecs.indexOf(this.opponent),1); // Remove dead character from list of ecs
                     deadNames.push(this.opponent.name); // Add name to list of the dead
+                    this.opponent.element.find('img').attr('src', "./assest/images/skull.png"); // Change character image to skull
                     this.opponent = undefined; // Reset this.opponent
-
+                    
                     // Now ONLY IF we haven't also won or lost the game this round, we'll have the player chose another opponent to fight
                     if (this.mode === 'attack') {
 
