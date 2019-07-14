@@ -22,3 +22,7 @@
     background-color: maroon;
     border: 1px solid darkgrey;
 }
+
+button {
+    overflow: hidden;
+}
