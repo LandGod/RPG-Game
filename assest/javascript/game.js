@@ -13,6 +13,7 @@ dp = 'counter attack power (ie: defence power)'
 Other names:
 pc = player character
 ec = enemy character
+dSV = default stat values
 */
 
 var pc; // Will be the object chosen as the player character
@@ -53,12 +54,14 @@ class Character {
         this.hp = hp; // Health
         this.ap = ap; // Attack power
         this.dp = dp; // Defence power (aka: counter-attack power)
-        this.element = $(`#${name}`); // Grabs the html tag that this 
+        this.element = $(`#${name}`); // Grabs the html tag which represents this object on the webpage
         this.class = defualtAttributes.split(' '); // List of classes contained in the html element's 'class' attribute
         this.makePC = function () { pc = this; this.mkClass('pc');}; // Adds this object as the 'pc' ie: player character
         this.makeEC = function () { ecs.push(this); this.mkClass('ec');}; // Adss this object to the list of 'ec's ie: enemy characters
         
-        this.reInitialize = function () { // Resets object to default values. dSV is an object containing default values indexed to the object name
+        // Resets object to default values. dSV is an object containing default values indexed to the object name
+        // dSV format: {'object.name' : [HP, AP, DP]}
+        this.reInitialize = function () { 
             this.hp = dSV[this.name][0];
             this.ap = dSV[this.name][1];
             this.dp = dSV[this.name][2];
@@ -66,7 +69,8 @@ class Character {
             this.class = defualtAttributes.split(' ');
         };
 
-        this.mkClass = function (newClass) { // Adds a class to the 'class' attribute of the html element
+        // Adds a class to the 'class' attribute of the html element
+        this.mkClass = function (newClass) { 
             this.class = this.element.attr('class').split(' ');
             if (!(this.class.includes(newClass))) {
                 this.class.push(newClass);
@@ -74,7 +78,8 @@ class Character {
             };
         };
 
-        this.rmClass = function (oldClass) { // Removes an existing class from the class attribute of the html element while preserving the rest of the classes
+        // Removes an existing class from the class attribute of the html element while preserving the rest of the classes
+        this.rmClass = function (oldClass) { 
             this.class = this.element.attr('class').split(' ');
             if (this.class.includes(oldClass)) {
                 let rmIndex = this.class.indexOf(oldClass);
@@ -85,13 +90,15 @@ class Character {
             };
         };
 
-        this.updateReadout = function() { // Displays the current values for hp, ap, dp, etc.
+        // Displays the current values for hp, ap, dp, etc.
+        this.updateReadout = function() { 
             this.element.find('#ap').html(`AP: ${this.ap}`);
             this.element.find('#dp').html(`DP: ${this.dp}`);
             this.element.find('#hp').html(`HP: ${this.hp}`);
         };
 
-        this.element.click(function () { actionButton.val($(this).val()); }); // Adds a click handler that sets the value for action button to this elements's value
+        // Adds a click handler that sets the value for action button to this elements's value
+        this.element.click(function () { actionButton.val($(this).val()); }); 
     }
 };
 
@@ -105,18 +112,25 @@ const allChars = [one, two, three, four]; // list for easy selection of all char
 
 // Main logic handler for the game that will orchestrate all the other objects and have a method called on it to advance the action
 const mainLoop = {
+
     // Modes: 'charSelect', 'enemySelect', 'attack', 'end'
     mode: 'charSelect',
 
+    // Stores the ec object which is currently being fought by the pc
     opponent: undefined,
+
     // This method will be attached to a click event for the actionButton. It will have the value of the button passed in to the 'value' argument
     action: function(value) {
 
         // What we do with this info will depend on what mode we're in
         switch(this.mode) {
+
+            // The characer select mode is the starting mode. When the actionButton is clicked in this mode
+            // whichever character was selected by the user should me made into the player characer
+            // while all other characters should be made into enemy characters
             case 'charSelect':
 
-                // if the case is character select then we need to use another switch to see which character we're selecting as the pc.
+                // Call the 'makePC' method on whichever character the user chose
                 switch(value) {
                     case 'one': one.makePC(); break;
                     case 'two': two.makePC(); break;
@@ -131,21 +145,28 @@ const mainLoop = {
                     };
                 };
                 
-                // Then we want to change modes so we don't get any funky behavior from the user selecting more than one pc
+                // Then we want to change modes so our next user selection can be handled as selecting an enemy to fight
                 this.mode = 'enemySelect'
 
                 // Now we need to move the pc to top row
                 pc.element.detach();
                 $('#row-top').append(pc.element);
 
-                // And change title text to promp the user to select an enemy. 'Select' still works for the button text, but we'll make it explicit just in case.
+                // And change title text to promp the user to select an enemy. 
+                // 'Select' still works for the button text, but we'll make it explicit just in case.
                 $('#title').html('Choose your first opponent!');
                 actionButton.element.html('Select');
 
                 break;
 
+            // Enemy select is very similar to character select,
+            // except that we have to check that the selection is neither the player or an already dead enemy.
+            // This selection will be saved in this.opponent so we always no who the current enemy we're fighting is
             case 'enemySelect':
-                // Now basically do the same thing over again to select an enemy to fight, except we make sure the user can't select themselves to fight.
+
+                // The value will be the value of .name for whichever character was last clicked before the action button was clicked
+                // There are only four valid character names, but each valid name must be further checked to avoid two error cases:
+                // 1) PC cannot fight themeselves and 2) PC cannot fight an EC they've already killed.
                 switch(value) {
                     case 'one': if(!(value === pc.name) && !deadNames.includes(value)){this.opponent = one; one.mkClass('opp');}; break;
                     case 'two': if(!(value === pc.name) && !deadNames.includes(value)){this.opponent = two; two.mkClass('opp');}; break;
@@ -153,17 +174,26 @@ const mainLoop = {
                     case 'four': if(!(value === pc.name) && !deadNames.includes(value)){this.opponent = four; four.mkClass('opp');}; break;
                 };
 
-                console.log(`DEBUG: this.opponent = ${this.opponent}`);
+                // If no valid section was made, do nothing.
+                if (this.opponent === undefined) {break;}; 
 
-                if (this.opponent === undefined) {break;}; // If no valid section was made, do nothing.
-
-                // Then switch to attack mode
+                // If a valid selection was made, then switch to attack mode
+                // and update title and button text accordingly
                 $('#title').html('FIGHT!');
                 actionButton.element.html('Attack!');
                 this.mode = 'attack';
-                break;
 
+                break;
+            
+
+            // The attack case does the same thing over and over again until either the pc or current opponent ec has less than 1 hp.
+            // Every attack round: 
+                // the pc loses hp equal to the opponent's dp
+                // the opponent loses hp equal to the pc's curret ap
+                // AFTER those two things happen, the pc's ap is incremented by its default value.
+            // As the game can be won or lost during an attack round we must also check for and handle 'win' and 'loss' conditions here
             case 'attack':
+
                 // Decrement hit points
                 this.opponent.hp -= pc.ap;
                 pc.hp -= this.opponent.dp;
@@ -175,52 +205,88 @@ const mainLoop = {
                 pc.updateReadout();
                 this.opponent.updateReadout();
 
-                // Check for deaths
+                // Check player death
+                // Note that since we do this before checking for opponent death, if the player dies at the same time as thier
+                // last opponent, we still count that as a loss. This is the intended behavior. 
                 if (pc.hp < 1) {
+
                     // Game over
-                    $('#title').html('G A M E &nbsp;&nbsp; O V E R');
-                    $('#row-bot').html('<br> <br>');
-                    actionButton.element.html('New Game');
-                    this.mode = 'end';
-                } else if (this.opponent.hp < 1 && ecs.length < 2) {
-                    // Win!
-                    $('#title').html('Y O U &nbsp;&nbsp; W I N');
-                    $('#row-bot').html('<br> <br>');
+                    pc.mkClass('dead'); // Display pc as dead
+                    $('#title').html('G A M E &nbsp;&nbsp; O V E R'); // Change title
+
+                    // It's important to add some blank lines above the actionButton to push it down the page
+                    // This prevents a user who is mashing 'attack' from restarting the game before they realize it's even over
+                    $('#row-bot').html('<br> <br>'); 
+
+                    // Change mainLoop mode and button text.
                     actionButton.element.html('New Game');
                     this.mode = 'end';
                 } 
                 
-                if (this.opponent.hp < 1) { // Wether or not we've won or lost, we'll still 'kill' the enemy if they died this round
+                // check for death of final opponent
+                else if (this.opponent.hp < 1 && ecs.length < 2) {
+
+                    // Update title
+                    $('#title').html('Y O U &nbsp;&nbsp; W I N'); 
+
+                    // It's important to add some blank lines above the actionButton to push it down the page
+                    // This prevents a user who is mashing 'attack' from restarting the game before they realize it's even over
+                    $('#row-bot').html('<br> <br>');
+
+                    // Update mainLoop mode and button text
+                    actionButton.element.html('New Game');
+                    this.mode = 'end';
+                }; 
+                
+                // Wether or not we've won or lost, we'll still 'kill' the enemy if they died this round
+                if (this.opponent.hp < 1) { 
+
                     // Perform kill actions
                     this.opponent.mkClass('dead'); // Display character as dead
                     ecs.splice(ecs.indexOf(this.opponent),1); // Remove dead character from list of ecs
                     deadNames.push(this.opponent.name); // Add name to list of the dead
                     this.opponent = undefined; // Reset this.opponent
 
-                    // Now only if we haven't also won or lost the game this round, we'll have the player chose another opponent to fight
+                    // Now ONLY IF we haven't also won or lost the game this round, we'll have the player chose another opponent to fight
                     if (this.mode === 'attack') {
-                        // Reset to pick new enemy
-                        this.mode = 'enemySelect' // Change mode back to enemy select
+
+                        // Change mode back to enemy select
+                        this.mode = 'enemySelect' 
+
                         // Reset page back to enemy select:
                         $('#title').html('Select another opponent!');
                         actionButton.element.html('Select');
                     };
                 };
+
                 break;
             
+            // The end case is triggered when the user clicks the action button after the game has ended. 
+            // It's the same for win or loss
             case 'end':
-                // Reset game
+
+                // Reset global variables and mainLoop attributes used for tracking the game action
                 this.mode = 'charSelect';
                 pc = undefined;
                 ecs = [];
                 deadNames = [];
                 this.opponent = undefined;
+
+                // Reset characters
                 for (c in allChars) {
+
+                    // Resets hp and ap to defaults for all characters
                     allChars[c].reInitialize();
+
+                    // Resets html element positioning 
                     allChars[c].element.detach();
                     $('#row-mid').append(allChars[c].element);
+
+                    // Updates the displayed values for all character stats
                     allChars[c].updateReadout();
                 };
+
+                // Set title and button text to defaults
                 actionButton.element.html('Select');
                 $('#title').html('Choose your fighter!');
             
@@ -240,6 +306,9 @@ window.onload = function() {
     };
 
     // Created click handler for main button
+    // Every time the actionButton is pressed we want to call the action method on the mainLoop object.
+    // Since the action method requires a value argument, we need to call it within an anonymous function
+    // from which we can grab the value from the html button element's 'value' property
     actionButton.element.click(
         function () {
             mainLoop.action($(this).val());
