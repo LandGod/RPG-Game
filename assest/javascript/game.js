@@ -289,6 +289,9 @@ const mainLoop = {
                 // Set title and button text to defaults
                 actionButton.element.html('Select');
                 $('#title').html('Choose your fighter!');
+
+                // Remove extra blank lines we had added to push the actionButton down, so it goes back to it's original place
+                $('#row-bot').html('');
             
                 break;
 
