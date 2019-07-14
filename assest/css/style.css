@@ -1,6 +1,7 @@
 .char {
     background-color: lightgray;
     border: 1px solid black;
+    overflow: hidden;
 }
 
 .pc {
@@ -21,8 +22,4 @@
 .dead {
     background-color: maroon;
     border: 1px solid darkgrey;
-}
-
-button {
-    overflow: hidden;
 }
