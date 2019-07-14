@@ -23,8 +23,8 @@ const deadNames = []; // List of value of .name for all dead characters
 const defualtAttributes = $('.char').attr('class'); 
 
 // Default stat values - If these values need to be changed, change them here only as everything else pulls from these values.
-// Format [HP,AP,DP]
-const dSV = {'one':[150,25,50], 'two':[500,5,15], 'three':[100,15,75], 'four':[75,50,150]};
+// Format: {'object.name' : [HP,AP,DP]}
+const dSV = {'one':[150,25,25], 'two':[500,5,10], 'three':[100,15,55], 'four':[75,50,75]};
 
 // Action button
 // Starts out as select button and will be re-used as all other buttons throughout the game
