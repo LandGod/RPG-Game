@@ -190,7 +190,7 @@ const mainLoop = {
                     this.mode = 'end';
                 } else if (this.opponent.hp < 1) {
                     // Win round. Remove enemy. 
-                    this.opponent.element.detach(); // Remove dead ec from html
+                    this.opponent.mkClass('dead'); // Display character as dead
                     ecs.splice(ecs.indexOf(this.opponent),1); // Remove dead character from list of ecs
                     deadNames.push(this.opponent.name); // Add name to list of the dead
                     this.opponent = undefined; // Reset this.opponent
