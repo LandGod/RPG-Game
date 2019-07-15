@@ -131,6 +131,9 @@ const mainLoop = {
             // while all other characters should be made into enemy characters
             case 'charSelect':
 
+                // If no character was selected, do nothing
+                if (!(['one', 'two', 'three', 'four'].includes(value))) {break;};
+
                 // Call the 'makePC' method on whichever character the user chose
                 switch(value) {
                     case 'one': one.makePC(); break;
@@ -292,6 +295,7 @@ const mainLoop = {
                 // Set title and button text to defaults
                 actionButton.element.html('Select');
                 $('#title').html('Choose your fighter!');
+                actionButton.val(' ');
 
                 // Remove extra blank lines we had added to push the actionButton down, so it goes back to it's original place
                 $('#row-bot').html('');
