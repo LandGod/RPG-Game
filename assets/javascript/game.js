@@ -67,7 +67,7 @@ class Character {
             this.dp = dSV[this.name][2];
             this.element.attr('class', defualtAttributes);
             this.class = defualtAttributes.split(' ');
-            this.element.find('img').attr('src', `./assest/images/${name}.png`)
+            this.element.find('img').attr('src', `./assets/images/${name}.png`)
         };
 
         // Adds a class to the 'class' attribute of the html element
@@ -214,7 +214,7 @@ const mainLoop = {
                     // Game over
                     pc.mkClass('dead'); // Display pc as dead
                     $('#title').html('G A M E &nbsp;&nbsp; O V E R'); // Change title
-                    pc.element.find('img').attr('src', "./assest/images/skull.png"); // Change character image to skull
+                    pc.element.find('img').attr('src', "./assets/images/skull.png"); // Change character image to skull
 
                     // It's important to add some blank lines above the actionButton to push it down the page
                     // This prevents a user who is mashing 'attack' from restarting the game before they realize it's even over
@@ -247,7 +247,7 @@ const mainLoop = {
                     this.opponent.mkClass('dead'); // Display character as dead
                     ecs.splice(ecs.indexOf(this.opponent),1); // Remove dead character from list of ecs
                     deadNames.push(this.opponent.name); // Add name to list of the dead
-                    this.opponent.element.find('img').attr('src', "./assest/images/skull.png"); // Change character image to skull
+                    this.opponent.element.find('img').attr('src', "./assets/images/skull.png"); // Change character image to skull
                     this.opponent = undefined; // Reset this.opponent
                     
                     // Now ONLY IF we haven't also won or lost the game this round, we'll have the player chose another opponent to fight
