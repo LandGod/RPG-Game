@@ -4,6 +4,10 @@
     overflow: hidden;
 }
 
+.char img {
+    max-width: 89%;
+}
+
 #char-mid {
     position: relative;
 }
@@ -14,7 +18,7 @@
     background: rgb(0, 0, 0);
     background: rgba(0, 0, 0, 0.5);
     color: #f1f1f1; 
-    width: 100%;
+    width: 89%;
     color: white;
     font-size: 20px;
     padding: 5px;
