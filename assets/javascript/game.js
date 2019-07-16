@@ -1,9 +1,9 @@
 /* 
 The characters are as follows:
-1: one
-2: two
-3: three
-4: four
+1: one - "Brawler" or "DPS"
+2: two - "Tank"
+3: three - "Archer" or "Rogue"
+4: four - "Mage"
 
 Stats will be defined as follows:
 ap = 'attack power'
@@ -25,7 +25,7 @@ const defualtAttributes = $('.char').attr('class');
 
 // Default stat values - If these values need to be changed, change them here only as everything else pulls from these values.
 // Format: {'object.name' : [HP,AP,DP]}
-const dSV = {'one':[300,25,25], 'two':[500,8,10], 'three':[200,15,55], 'four':[150,50,75]};
+const dSV = {'one':[300,25,25], 'two':[500,8,10], 'three':[200,18,55], 'four':[150,50,75]};
 
 // Action button
 // Starts out as select button and will be re-used as all other buttons throughout the game
