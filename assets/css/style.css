@@ -40,3 +40,29 @@
     background-color: maroon;
     border: 1px solid darkgrey;
 }
+
+/* Media querys */
+
+@media only screen and (max-width: 600px) {
+    .char {
+        font-size: 0.5em;
+    }
+
+    .char h6 {
+        position: absolute; 
+        bottom: 0; 
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5);
+        color: #f1f1f1; 
+        width: 100%;
+        color: white;
+        font-size: 1em;
+        padding: 2px;
+        text-align: center;
+    }
+
+    main h1 {
+        font-size: 1.5em;
+    }
+
+  }
