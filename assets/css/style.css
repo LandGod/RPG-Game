@@ -4,6 +4,23 @@
     overflow: hidden;
 }
 
+#char-mid {
+    position: relative;
+}
+
+.char h6 {
+    position: absolute; 
+    bottom: 0; 
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5);
+    color: #f1f1f1; 
+    width: 89%;
+    color: white;
+    font-size: 20px;
+    padding: 5px;
+    text-align: center;
+}
+
 .pc {
     background-color: aquamarine;
     border: 3px solid green;
